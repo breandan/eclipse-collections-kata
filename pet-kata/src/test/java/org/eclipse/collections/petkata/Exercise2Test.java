@@ -12,6 +12,7 @@ package org.eclipse.collections.petkata;
 
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.block.predicate.Predicate;
+import org.eclipse.collections.api.block.predicate.Predicate2;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Lists;
@@ -25,7 +26,8 @@ public class Exercise2Test extends PetDomainForKata
     @Test
     public void doAnyPeopleHaveCats()
     {
-        Predicate<Person> predicate = null; //replace null with a predicate which checks for PetType.CAT
+        Predicate<Person> predicate = person -> person.hasPet(PetType.CAT);
+
         Assert.assertTrue(this.people.anySatisfy(predicate));
     }
 
@@ -33,7 +35,9 @@ public class Exercise2Test extends PetDomainForKata
     public void doAllPeopleHavePets()
     {
         Predicate<Person> predicate = person -> person.isPetPerson();
-        boolean result = true; //replace with something that checks if all people have pets
+
+        boolean result = this.people.allSatisfy(predicate); //replace with something that checks if all people have pets
+
         Assert.assertFalse(result);
     }
 
@@ -41,6 +45,9 @@ public class Exercise2Test extends PetDomainForKata
     public void howManyPeopleHaveCats()
     {
         int count = 0;
+
+        count = this.people.countWith(Person::hasPet, PetType.CAT);
+
         Assert.assertEquals(2, count);
     }
 
@@ -48,6 +55,9 @@ public class Exercise2Test extends PetDomainForKata
     public void findMarySmith()
     {
         Person result = null;
+
+        result = this.people.detect(person -> person.named("Mary Smith"));
+
         Assert.assertEquals("Mary", result.getFirstName());
         Assert.assertEquals("Smith", result.getLastName());
     }
@@ -55,7 +65,8 @@ public class Exercise2Test extends PetDomainForKata
     @Test
     public void getPeopleWithPets()
     {
-        MutableList<Person> petPeople = this.people; //replace with only the pet owners
+        MutableList<Person> petPeople = this.people.select(Person::isPetPerson); //replace with only the pet owners
+
         Verify.assertSize(7, petPeople);
     }
 
@@ -63,7 +74,7 @@ public class Exercise2Test extends PetDomainForKata
     public void getAllPetsOfAllPeople()
     {
         Function<Person, Iterable<PetType>> function = person -> person.getPetTypes();
-        MutableSet<PetType> petTypes = null;
+        MutableSet<PetType> petTypes = this.people.toSet().flatCollect(function);
         Assert.assertEquals(
                 Sets.mutable.with(PetType.CAT, PetType.DOG, PetType.TURTLE, PetType.HAMSTER, PetType.BIRD, PetType.SNAKE),
                 petTypes);
