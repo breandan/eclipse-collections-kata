@@ -24,6 +24,9 @@ public class Exercise1Test extends PetDomainForKata
         MutableList<Person> people = this.people;
         MutableList<String> firstNames = null;
         MutableList<String> expectedFirstNames = Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John");
+
+        firstNames = people.collect(Person::getFirstName);
+
         Assert.assertEquals(expectedFirstNames, firstNames);
     }
 
@@ -33,6 +36,9 @@ public class Exercise1Test extends PetDomainForKata
         Person person = this.getPersonNamed("Mary Smith");
         MutableList<Pet> pets = person.getPets();
         MutableList<String> names = null; //Replace null, with a transformation method on MutableList.
+
+        names = pets.collect(Pet::getName);
+
         Assert.assertEquals("Tabby", names.makeString());
     }
 
@@ -41,6 +47,9 @@ public class Exercise1Test extends PetDomainForKata
     {
         MutableList<Person> people = this.people;
         MutableList<Person> peopleWithCats = null;
+
+        peopleWithCats = people.select(person -> person.hasPet(PetType.CAT));
+
         Verify.assertSize(2, peopleWithCats);
     }
 
@@ -49,6 +58,9 @@ public class Exercise1Test extends PetDomainForKata
     {
         MutableList<Person> people = this.people;
         MutableList<Person> peopleWithoutCats = null;
+
+        peopleWithoutCats = people.select(person -> !person.hasPet(PetType.CAT));
+
         Verify.assertSize(6, peopleWithoutCats);
     }
 }
