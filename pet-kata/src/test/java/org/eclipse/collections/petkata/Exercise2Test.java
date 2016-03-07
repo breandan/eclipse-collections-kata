@@ -83,7 +83,7 @@ public class Exercise2Test extends PetDomainForKata
     @Test
     public void getFirstNamesOfAllPeople()
     {
-        MutableList<String> firstNames = null;
+        MutableList<String> firstNames = this.people.collect(Person::getFirstName);
         Assert.assertEquals(
                 Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John"),
                 firstNames);
@@ -96,7 +96,7 @@ public class Exercise2Test extends PetDomainForKata
         Assert.assertTrue(peopleHaveCatsLambda);
 
         //use method reference, NOT lambdas, to solve the problem below
-        boolean peopleHaveCatsMethodRef = false;
+        boolean peopleHaveCatsMethodRef = this.people.anySatisfyWith(Person::hasPet, PetType.CAT);
         Assert.assertTrue(peopleHaveCatsMethodRef);
     }
 
